@@ -1,0 +1,19 @@
+[alex]
+    name = "Alex Bold"
+    nickname = "Alex"
+    avatar = "https://api.dicebear.com/7.x/avataaars/png?seed=A"
+    bio = { en = "A digital explorer loving brutalist designs.", zh = "热爱粗野主义设计的数字探索者。" }
+    github = "https://github.com/example"
+    website = "https://example.com"
+    email = "alex@example.com"
+    weight = 1
+
+[sarah]
+    name = "Sarah Ink"
+    nickname = "Sarah"
+    avatar = "https://api.dicebear.com/7.x/avataaars/png?seed=S"
+    bio = { en = "Writing code and prose with equal passion.", zh = "用同样的热情书写代码与散文。" }
+    github = "https://github.com/example"
+    website = "https://example.com"
+    email = "sarah@example.com"
+    weight = 2

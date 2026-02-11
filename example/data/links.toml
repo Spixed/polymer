@@ -1,0 +1,11 @@
+[[friends]]
+name = "Polymer Demo"
+url = "https://example.com"
+description = "Check out the original demo."
+avatar = "https://ui-avatars.com/api/?name=Polymer&background=random"
+
+[[friends]]
+name = "Spixed"
+url = "https://spixed.is-a.dev/"
+description = "The creator."
+avatar = "https://spixed.is-a.dev/spixed.png"

@@ -1,0 +1,5 @@
+<div class="code-container">
+    {{ if .Type }}<div class="code-lang">{{ .Type | upper }}</div>{{ end }}
+    {{ $result := transform.Highlight .Inner .Type .Options }}
+    {{ $result }}
+</div>

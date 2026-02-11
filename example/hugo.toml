@@ -1,0 +1,50 @@
+baseURL = "your_blog_url"
+languageCode = "en-us"
+title = "Polymer Grid"
+theme = "polymer"
+themesDir = "../.."
+[languages]
+  [languages.en]
+    languageName = 'English'
+    contentDir = 'content/en'
+    weight = 1
+  [languages.zh]
+    languageName = '中文'
+    contentDir = 'content/zh'
+    weight = 2
+
+[params]
+  description = "A Digital Brutalism Theme"
+  math = true
+  mathEngine = "mathjax"
+  favicon = "https://api.dicebear.com/7.x/bottts/png?seed=Polymer"
+
+[params.waline]
+  serverURL = "your_waline_server_url"
+
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+
+[menu]
+  [[menu.main]]
+    identifier = "archives"
+    name = "Archives"
+    url = "/archives/"
+    weight = 10
+  [[menu.main]]
+    identifier = "links"
+    name = "Links"
+    url = "/links/"
+    weight = 20
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+    [markup.goldmark.extensions]
+      [markup.goldmark.extensions.passthrough]
+        enable = true
+        [markup.goldmark.extensions.passthrough.delimiters]
+          block = [['$$', '$$'], ['\\[', '\\]']]
+          inline = [['$', '$'], ['\\(', '\\)']]
