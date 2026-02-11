@@ -1,14 +1,14 @@
 ---
-title: "My Terminal Setup Guide"
+title: My Terminal Setup Guide
 date: 2024-01-20
+draft: false
 author: alex
 featured: false
-categories:
-  - Tools
-tags:
-  - Terminal
-  - Productivity
+categories: [Tools]
+tags: [Terminal, Productivity]
+description: ''
 ---
+
 
 A well-configured terminal is a developer's best friend. Here's my setup.
 

@@ -1,12 +1,14 @@
 ---
-title: "数字野兽派并不丑陋"
-date: 2026-02-08T12:00:00+08:00
+title: 数字野兽派并不丑陋
+date: 2026-02-08 12:00:00+08:00
 draft: false
-author: "sarah"
+author: sarah
 featured: true
-categories: ["Culture"]
-tags: ["Art", "Web"]
+categories: [Culture]
+tags: [Art, Web]
+description: ''
 ---
+
 
 人们误以为“野兽派”意味着“残暴”。其实它源自法语 *béton brut*，意为“清水混凝土”。它是关于诚实的艺术，是关于展示脚手架的勇气。
 

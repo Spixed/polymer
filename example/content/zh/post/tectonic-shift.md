@@ -1,12 +1,14 @@
 ---
-title: "界面设计的构造运动"
-date: 2026-02-09T12:00:00+08:00
+title: 界面设计的构造运动
+date: 2026-02-09 12:00:00+08:00
 draft: false
-author: "alex"
+author: alex
 featured: true
-categories: ["Design"]
-tags: ["UI", "Trend"]
+categories: [Design]
+tags: [UI, Trend]
+description: ''
 ---
+
 
 我们花了整整十年时间试图将“计算机感”从屏幕中抹去。我们拍扁了按钮，去掉了边框，让元素漂浮在白色的虚空中。但现在，钟摆正在回摆。
 

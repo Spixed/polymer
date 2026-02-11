@@ -1,12 +1,14 @@
 ---
-title: "The Tectonic Shift in Interfaces"
-date: 2026-02-09T12:00:00+08:00
+title: The Tectonic Shift in Interfaces
+date: 2026-02-09 12:00:00+08:00
 draft: false
-author: "alex"
+author: alex
 featured: true
-categories: ["Design"]
-tags: ["UI", "Trend"]
+categories: [Design]
+tags: [UI, Trend]
+description: ''
 ---
+
 
 We spent a decade removing the "computer" from the screen. We flattened buttons, removed borders, and floated elements in a sea of white space. But the pendulum is swinging back.
 

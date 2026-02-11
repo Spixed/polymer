@@ -1,14 +1,14 @@
 ---
-title: "Linux 服务器加固指南"
+title: Linux 服务器加固指南
 date: 2024-01-25
+draft: false
 author: sarah
 featured: false
-categories:
-  - 安全
-tags:
-  - Linux
-  - 运维
+categories: [安全]
+tags: [Linux, 运维]
+description: ''
 ---
+
 
 一个全新的 Linux 服务器是脆弱的。这是如何加固它。
 

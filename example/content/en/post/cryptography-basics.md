@@ -1,15 +1,14 @@
 ---
-title: "Cryptography Fundamentals"
+title: Cryptography Fundamentals
 date: 2024-02-03
+draft: false
 author: sarah
 featured: true
-categories:
-  - Security
-tags:
-  - Cryptography
-  - Math
-math: true
+categories: [Security]
+tags: [Cryptography, Math]
+description: ''
 ---
+
 
 In a world of digital communication, cryptography is essential. Let's explore the basics.
 

@@ -1,14 +1,14 @@
 ---
-title: "Git Workflow Best Practices"
+title: Git Workflow Best Practices
 date: 2024-01-15
+draft: false
 author: alex
 featured: false
-categories:
-  - Development
-tags:
-  - Git
-  - Workflow
+categories: [Development]
+tags: [Git, Workflow]
+description: ''
 ---
+
 
 Git is powerful, but without good practices, it can become chaotic. Here's my approach.
 

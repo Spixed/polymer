@@ -1,14 +1,14 @@
 ---
-title: "Linux Server Hardening Guide"
+title: Linux Server Hardening Guide
 date: 2024-01-25
+draft: false
 author: sarah
 featured: false
-categories:
-  - Security
-tags:
-  - Linux
-  - Sysadmin
+categories: [Security]
+tags: [Linux, Sysadmin]
+description: ''
 ---
+
 
 A fresh Linux server is vulnerable. Here's how to lock it down.
 

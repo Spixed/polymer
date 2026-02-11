@@ -1,14 +1,14 @@
 ---
-title: "我的终端配置指南"
+title: 我的终端配置指南
 date: 2024-01-20
+draft: false
 author: alex
 featured: false
-categories:
-  - 工具
-tags:
-  - 终端
-  - 效率
+categories: [工具]
+tags: [终端, 效率]
+description: ''
 ---
+
 
 一个配置良好的终端是开发者的好伙伴。这是我的设置。
 

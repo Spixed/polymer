@@ -1,13 +1,14 @@
 ---
-title: "Qmoji Showcase"
-date: 2024-05-23T15:00:00+08:00
+title: Qmoji Showcase
+date: 2024-05-23 15:00:00+08:00
 draft: false
+author: sarah
 featured: false
-author: "sarah"
-categories: ["Features"]
-tags: ["Qmoji", "Shortcodes"]
-description: "Demonstrating the Qmoji shortcode integration."
+categories: [Features]
+tags: [Qmoji, Shortcodes]
+description: Demonstrating the Qmoji shortcode integration.
 ---
+
 
 Polymer supports QQ-style emojis (Qmoji) via shortcodes. These add a fun, expressive layer to your content.
 

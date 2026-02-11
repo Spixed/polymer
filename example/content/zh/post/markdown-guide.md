@@ -1,13 +1,14 @@
 ---
-title: "Markdown 语法指南"
-date: 2024-02-15T12:00:00+08:00
+title: Markdown 语法指南
+date: 2024-02-15 12:00:00+08:00
 draft: false
-author: "alex"
+author: alex
 featured: true
-categories: ["指南"]
-tags: ["Markdown", "文档"]
-description: "Polymer 主题支持的 Markdown 语法完整指南。"
+categories: [指南]
+tags: [Markdown, 文档]
+description: Polymer 主题支持的 Markdown 语法完整指南。
 ---
+
 
 本文提供了可以在 Hugo 内容文件中使用的基本 Markdown 语法示例，展示了各种 HTML 元素在 Polymer 主题中的样式表现。
 

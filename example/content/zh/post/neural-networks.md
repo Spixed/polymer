@@ -1,15 +1,14 @@
 ---
-title: "从零开始理解神经网络"
+title: 从零开始理解神经网络
 date: 2024-02-05
+draft: false
 author: sarah
 featured: true
-categories:
-  - AI
-tags:
-  - 机器学习
-  - Python
-math: true
+categories: [AI]
+tags: [机器学习, Python]
+description: ''
 ---
+
 
 理解神经网络需要从头构建一个。让我们深入探索。
 

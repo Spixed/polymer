@@ -1,14 +1,14 @@
 ---
-title: "构建现代设计系统"
+title: 构建现代设计系统
 date: 2024-02-01
+draft: false
 author: alex
 featured: true
-categories:
-  - 设计
-tags:
-  - CSS
-  - 架构
+categories: [设计]
+tags: [CSS, 架构]
+description: ''
 ---
+
 
 一个精心设计的设计系统是任何可扩展产品的基石。让我们探索它们的运作方式。
 

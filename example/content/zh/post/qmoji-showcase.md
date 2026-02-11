@@ -1,13 +1,14 @@
 ---
-title: "Qmoji 表情展示"
-date: 2024-05-23T15:00:00+08:00
+title: Qmoji 表情展示
+date: 2024-05-23 15:00:00+08:00
 draft: false
+author: sarah
 featured: false
-author: "sarah"
-categories: ["功能"]
-tags: ["Qmoji", "Shortcodes"]
-description: "展示 Qmoji 短代码集成效果。"
+categories: [功能]
+tags: [Qmoji, Shortcodes]
+description: 展示 Qmoji 短代码集成效果。
 ---
+
 
 Polymer 主题通过短代码支持 QQ 风格的表情（Qmoji）。这为您的内容增添了一层有趣的表现力。
 

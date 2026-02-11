@@ -1,14 +1,14 @@
 ---
-title: "Git 工作流最佳实践"
+title: Git 工作流最佳实践
 date: 2024-01-15
+draft: false
 author: alex
 featured: false
-categories:
-  - 开发
-tags:
-  - Git
-  - 工作流
+categories: [开发]
+tags: [Git, 工作流]
+description: ''
 ---
+
 
 Git 功能强大，但如果没有好的实践，它可能会变得混乱。这是我的方法。
 

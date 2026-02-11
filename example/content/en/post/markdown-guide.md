@@ -1,13 +1,14 @@
 ---
-title: "Markdown Syntax Guide"
-date: 2024-02-15T12:00:00+08:00
+title: Markdown Syntax Guide
+date: 2024-02-15 12:00:00+08:00
 draft: false
-author: "alex"
+author: alex
 featured: true
-categories: ["Guide"]
-tags: ["Markdown", "Documentation"]
-description: "A comprehensive guide to Markdown syntax supported by Polymer theme."
+categories: [Guide]
+tags: [Markdown, Documentation]
+description: A comprehensive guide to Markdown syntax supported by Polymer theme.
 ---
+
 
 This article offers a sample of basic Markdown syntax that can be used in Hugo content files, also it shows whether basic HTML elements are decorated with CSS in a Hugo theme.
 

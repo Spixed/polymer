@@ -1,14 +1,14 @@
 ---
-title: "Vim Configuration for Minimalists"
+title: Vim Configuration for Minimalists
 date: 2024-01-10
+draft: false
 author: sarah
 featured: false
-categories:
-  - Tools
-tags:
-  - Vim
-  - Editor
+categories: [Tools]
+tags: [Vim, Editor]
+description: ''
 ---
+
 
 Vim doesn't need hundreds of plugins. Here's my minimal setup.
 

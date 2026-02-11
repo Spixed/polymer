@@ -1,14 +1,14 @@
 ---
-title: "Building Modern Design Systems"
+title: Building Modern Design Systems
 date: 2024-02-01
+draft: false
 author: alex
 featured: true
-categories:
-  - Design
-tags:
-  - CSS
-  - Architecture
+categories: [Design]
+tags: [CSS, Architecture]
+description: ''
 ---
+
 
 A well-crafted design system is the backbone of any scalable product. Let's explore what makes them tick.
 

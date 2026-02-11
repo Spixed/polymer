@@ -1,15 +1,14 @@
 ---
-title: "密码学基础"
+title: 密码学基础
 date: 2024-02-03
+draft: false
 author: sarah
 featured: true
-categories:
-  - 安全
-tags:
-  - 密码学
-  - 数学
-math: true
+categories: [安全]
+tags: [密码学, 数学]
+description: ''
 ---
+
 
 在数字通信的世界里，密码学是必不可少的。让我们探索基础知识。
 

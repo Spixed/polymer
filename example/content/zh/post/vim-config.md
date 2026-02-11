@@ -1,14 +1,14 @@
 ---
-title: "极简主义者的 Vim 配置"
+title: 极简主义者的 Vim 配置
 date: 2024-01-10
+draft: false
 author: sarah
 featured: false
-categories:
-  - 工具
-tags:
-  - Vim
-  - 编辑器
+categories: [工具]
+tags: [Vim, 编辑器]
+description: ''
 ---
+
 
 Vim 不需要数百个插件。这是我的极简设置。
 

@@ -1,15 +1,14 @@
 ---
-title: "Neural Networks From Scratch"
+title: Neural Networks From Scratch
 date: 2024-02-05
+draft: false
 author: sarah
 featured: true
-categories:
-  - AI
-tags:
-  - Machine Learning
-  - Python
-math: true
+categories: [AI]
+tags: [Machine Learning, Python]
+description: ''
 ---
+
 
 Understanding neural networks requires building one from the ground up. Let's dive in.
 

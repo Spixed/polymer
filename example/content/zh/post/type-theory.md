@@ -1,15 +1,14 @@
 ---
-title: "类型理论入门"
+title: 类型理论入门
 date: 2024-01-28
+draft: false
 author: alex
 featured: true
-categories:
-  - 编程
-tags:
-  - 类型
-  - 理论
-math: true
+categories: [编程]
+tags: [类型, 理论]
+description: ''
 ---
+
 
 类型系统不仅仅是捕获错误——它们是编译器可以验证的文档形式。
 

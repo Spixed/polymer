@@ -1,15 +1,14 @@
 ---
-title: "Introduction to Type Theory"
+title: Introduction to Type Theory
 date: 2024-01-28
+draft: false
 author: alex
 featured: true
-categories:
-  - Programming
-tags:
-  - Types
-  - Theory
-math: true
+categories: [Programming]
+tags: [Types, Theory]
+description: ''
 ---
+
 
 Type systems are more than just error catching—they're a form of documentation that the compiler can verify.
 
