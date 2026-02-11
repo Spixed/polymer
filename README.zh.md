@@ -62,23 +62,6 @@ enableEmoji = true
     weight = 2
     languageCode = "en-US"
 
-[menu]
-  [[menu.main]]
-    identifier = "home"
-    name = "首页"
-    url = "/"
-    weight = 1
-  [[menu.main]]
-    identifier = "archives"
-    name = "归档"
-    url = "/archives/"
-    weight = 10
-  [[menu.main]]
-    identifier = "links"
-    name = "友链"
-    url = "/links/"
-    weight = 20
-
 [markup]
   [markup.goldmark]
     [markup.goldmark.renderer]

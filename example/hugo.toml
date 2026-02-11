@@ -26,18 +26,6 @@ themesDir = "../.."
   category = "categories"
   tag = "tags"
 
-[menu]
-  [[menu.main]]
-    identifier = "archives"
-    name = "Archives"
-    url = "/archives/"
-    weight = 10
-  [[menu.main]]
-    identifier = "links"
-    name = "Links"
-    url = "/links/"
-    weight = 20
-
 [markup]
   [markup.goldmark]
     [markup.goldmark.renderer]
