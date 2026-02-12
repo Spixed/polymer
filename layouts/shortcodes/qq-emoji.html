@@ -34,7 +34,7 @@
             <img src="{{ $url }}/thumb.png" class="{{ $class }}" alt="{{ $match.describe }}" title="{{ $match.describe }}" />
         {{- else if eq (int $match.emojiType) 2 -}}
             {{- $uniqueId := printf "lottie-emoji-%s-%d" $match.emojiId now.UnixNano -}}
-            <div id="{{ $uniqueId }}" class="super-qmoji qmoji-lottie {{ $class }}" data-lottie-path="{{ $url }}/lottie.json" title="{{ $match.describe }}"></div>
+            <span id="{{ $uniqueId }}" class="super-qmoji qmoji-lottie {{ $class }}" data-lottie-path="{{ $url }}/lottie.json" title="{{ $match.describe }}"></span>
         {{- end -}}
         
         {{- if eq $mode "block" -}}

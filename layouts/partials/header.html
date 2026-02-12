@@ -1,5 +1,7 @@
 <header>
     <a href="{{ .Site.BaseURL | relLangURL }}" class="logo">
+        <img src="{{ .Site.Params.favicon | default (printf "//ui-avatars.com/api/?name=%s&background=random&rounded=true" (.Site.Title | urlquery)) | relURL }}" 
+            alt="logo" style="height: 1.2em; vertical-align: text-bottom;">
         {{ range (split .Site.Title ".") }}
         {{ . }}{{ if not (last 1 (split $.Site.Title ".")) }}<br>{{ end }}
         {{ end }}

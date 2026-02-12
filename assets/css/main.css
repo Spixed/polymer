@@ -360,12 +360,12 @@ article h1 {
 }
 
 .content { 
-    font-size: 1.3rem; 
+    font-size: 18px; 
     line-height: 1.7; 
     max-width: 800px; 
     overflow-wrap: break-word; /* Better word breaking for mobile */
 }
-.content p { margin-bottom: 2rem; }
+.content p { margin-bottom: 1.5rem; }
 
 .content p:first-of-type::first-letter,
 .content blockquote p:first-of-type::first-letter {
