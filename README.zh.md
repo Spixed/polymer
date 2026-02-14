@@ -133,7 +133,7 @@ Polymer 内置了独特的 Qmoji 系统（QQ 风格表情），由 [QFace](https
 
 ```markdown
 {{< qq-emoji "微笑" >}}
-{{< qq-emoji "大哭" >}}
+{{< qq-emoji "大哭" "block">}}
 ```
 
 ### 支持的名称

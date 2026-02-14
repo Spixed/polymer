@@ -326,6 +326,7 @@ aside nav a:hover, aside nav a.active {
 main.article-main { 
     padding: 5rem 6rem; background: var(--surface); position: relative; 
     transition: background 0.3s;
+    min-width: 0; /* Fix for grid item expansion */
 }
 
 .article-hero { margin-bottom: 4rem; position: relative; }

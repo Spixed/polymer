@@ -44,3 +44,19 @@
         <span class="qq-emoji-error">(未找到表情: {{ $emojiName }})</span>
     {{- end -}}
 {{- end -}}
+<script>
+    (function() {
+        var s = document.currentScript;
+        if (s) {
+            var el = s.previousElementSibling;
+            if (el && (el.closest('pre') || el.closest('code'))) {
+                var name = "{{ .Get 0 }}";
+                var mode = "{{ .Get 1 | default "" }}";
+                var raw = '{{ "{{" }}< qq-emoji "' + name + '"' + (mode ? ' "' + mode + '"' : '') + ' >{{ "}}" }}';
+                var text = document.createTextNode(raw);
+                el.parentNode.replaceChild(text, el);
+                s.remove();
+            }
+        }
+    })();
+</script>

@@ -149,9 +149,11 @@ Polymer includes a unique Qmoji system (QQ-style emojis) powered by [QFace](http
 Use the shortcode in your Markdown:
 
 ```markdown
-{{< qq-emoji "smile" >}}
-{{< qq-emoji "cry" >}}
+{{< qq-emoji "微笑" >}}
+{{< qq-emoji "大哭" "block">}}
 ```
+
+(Note: The "block" parameter is optional(default is inline). It will display the emoji as a block element if set to "block". And the Qmoji name must be in Chinese or slash command style.)
 
 ### Supported Names
 You can use the Chinese name (e.g., "微笑") or the slash command style (e.g., "/微笑").
