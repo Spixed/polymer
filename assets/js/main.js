@@ -5,29 +5,47 @@ function toggleMenu() {
     document.body.style.overflow = menu.classList.contains("open") ? "hidden" : "";
 }
 
-function initTheme() {
-    const saved = localStorage.getItem("theme");
-    const sysDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const btns = document.querySelectorAll('.btn-toggle[id*="theme-btn"]');
+function getTheme() {
+    return localStorage.getItem("theme") || "auto";
+}
 
-    if (saved === "dark" || (!saved && sysDark)) {
-        document.documentElement.setAttribute("data-theme", "dark");
-        btns.forEach((b) => (b.textContent = "DARK"));
+function applyTheme(theme) {
+    const btns = document.querySelectorAll('.btn-toggle[id*="theme-btn"]');
+    let effectiveTheme = theme;
+    
+    if (theme === "auto") {
+        const sysDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        effectiveTheme = sysDark ? "dark" : "light";
+        btns.forEach(b => b.textContent = "AUTO");
     } else {
-        document.documentElement.setAttribute("data-theme", "light");
-        btns.forEach((b) => (b.textContent = "LIGHT"));
+        btns.forEach(b => b.textContent = theme.toUpperCase());
     }
+    
+    document.documentElement.setAttribute("data-theme", effectiveTheme);
+}
+
+function initTheme() {
+    const theme = getTheme();
+    applyTheme(theme);
+    
+    // Listen for system preference changes
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+        if (getTheme() === "auto") {
+            applyTheme("auto");
+        }
+    });
 }
 
 function toggleTheme() {
-    const current = document.documentElement.getAttribute("data-theme");
-    const target = current === "dark" ? "light" : "dark";
-
-    document.documentElement.setAttribute("data-theme", target);
-    localStorage.setItem("theme", target);
-
-    const btns = document.querySelectorAll('.btn-toggle[id*="theme-btn"]');
-    btns.forEach((b) => (b.textContent = target.toUpperCase()));
+    const current = getTheme();
+    let next;
+    
+    if (current === "auto") next = "light";
+    else if (current === "light") next = "dark";
+    else next = "auto";
+    
+    localStorage.setItem("theme", next);
+    applyTheme(next);
 }
 
 // --- 2. FILTER & GRID ---
@@ -98,9 +116,12 @@ function distributeColorsAndSizes() {
 
 // --- 3. HERO LOGIC ---
 let heroInterval;
+let isHeroPlaying = true;
 
 function startHeroAutoPlay() {
     stopHeroAutoPlay();
+    if (!isHeroPlaying) return;
+    
     heroInterval = setInterval(() => {
         const active = document.querySelector(".hero-slide.active");
         if (!active) return;
@@ -115,14 +136,57 @@ function stopHeroAutoPlay() {
     if (heroInterval) clearInterval(heroInterval);
 }
 
+function toggleHeroPlay(e) {
+    if (e) { e.preventDefault(); e.stopPropagation(); }
+    isHeroPlaying = !isHeroPlaying;
+    const btn = document.getElementById("hero-play-btn");
+    if (btn) {
+        btn.innerHTML = isHeroPlaying
+            ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>'
+            : '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+    }
+    
+    if (isHeroPlaying) startHeroAutoPlay();
+    else stopHeroAutoPlay();
+}
+
+function prevHero(e) {
+    if (e) { e.preventDefault(); e.stopPropagation(); }
+    stopHeroAutoPlay();
+    
+    const active = document.querySelector(".hero-slide.active");
+    if (!active) return;
+    const currentId = parseInt(active.id.split("-")[1]);
+    const total = document.querySelectorAll(".hero-slide").length;
+    let prevId = currentId - 1;
+    if (prevId < 1) prevId = total;
+    
+    switchHero(prevId);
+    if (isHeroPlaying) startHeroAutoPlay();
+}
+
+function nextHero(e) {
+    if (e) { e.preventDefault(); e.stopPropagation(); }
+    stopHeroAutoPlay();
+    
+    const active = document.querySelector(".hero-slide.active");
+    if (!active) return;
+    const currentId = parseInt(active.id.split("-")[1]);
+    const total = document.querySelectorAll(".hero-slide").length;
+    const nextId = (currentId % total) + 1;
+    
+    switchHero(nextId);
+    if (isHeroPlaying) startHeroAutoPlay();
+}
+
 function switchHero(idx, e) {
     if (e) {
         e.preventDefault();
         e.stopPropagation();
-        stopHeroAutoPlay(); // Stop auto-play on manual interaction
-        startHeroAutoPlay(); // Restart after interaction
+        stopHeroAutoPlay(); 
+        if (isHeroPlaying) startHeroAutoPlay();
     }
-
+    
     document.querySelectorAll(".hero-slide").forEach((s) => s.classList.remove("active"));
     const targetSlide = document.getElementById("slide-" + idx);
     const heroCard = document.getElementById("hero-card");

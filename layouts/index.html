@@ -52,18 +52,36 @@
                         {{ end }}
                     </span>
                     <h2 style="font-size: 3.5rem;">{{ $post.Title }}</h2>
-                    <p style="font-size: 0.9rem; margin-bottom: 0.5rem; opacity: 0.8; margin-top: auto; display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; max-width: 600px;">
+                    <p style="font-size: 0.9rem; margin-bottom: 1.5rem; opacity: 0.8; margin-top: auto; display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; max-width: 600px;">
                         {{ if eq $.Lang "zh" }}{{ $post.Summary | plainify | truncate 70 }}{{ else }}{{ $post.Summary | plainify | truncate 130 }}{{ end }}
                     </p>
                 </div>
                 {{ end }}
             </div>
             {{ if gt (len $featured_posts) 1 }}
-            <div class="hero-nav">
+            <div class="hero-nav" onclick="event.preventDefault(); event.stopPropagation();">
+            <button class="hero-control-btn" onclick="prevHero(event)" aria-label="Previous">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                </svg>
+            </button>
+            <button class="hero-control-btn" onclick="toggleHeroPlay(event)" id="hero-play-btn" aria-label="Pause">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                </svg>
+            </button>
+            <button class="hero-control-btn" onclick="nextHero(event)" aria-label="Next">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                </svg>
+            </button>
+
+            <div class="hero-dots">
                 {{ range $index, $post := $featured_posts }}
                 <div class="hero-dot {{ if eq $index 0 }}active{{ end }}" onclick="switchHero({{ add $index 1 }}, event)"></div>
                 {{ end }}
             </div>
+        </div>
             {{ end }}
         </a>
     </div>

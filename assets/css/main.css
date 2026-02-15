@@ -283,8 +283,29 @@ h2 { font-size: 2.2rem; line-height: 1.1; text-shadow: 1px 1px 0 rgba(0,0,0,0.1)
 
 .hero-nav {
     position: absolute; bottom: 20px; right: 20px; z-index: 10;
-    display: flex; gap: 10px;
+    display: flex; gap: 10px; align-items: center;
 }
+
+.hero-dots {
+    display: flex; gap: 10px; margin-left: 10px;
+}
+
+.hero-control-btn {
+    background: var(--ink); color: var(--bg);
+    border: 2px solid var(--bg); /* Use bg for border to be visible on ink background? No, ink is usually black. */
+    /* Wait, hero card background changes. */
+    /* .hero-nav is on top of hero card. */
+    border: 2px solid var(--ink);
+    font-family: 'Space Mono'; font-weight: bold;
+    cursor: pointer; padding: 2px 8px;
+    font-size: 0.8rem;
+    transition: 0.2s;
+}
+
+.hero-control-btn:hover {
+    background: var(--surface); color: var(--ink); border-color: var(--surface);
+}
+
 .hero-dot {
     width: 16px; height: 16px; border: 2px solid var(--ink); background: var(--ink);
     cursor: pointer; transition: 0.2s;
@@ -358,6 +379,7 @@ article h1 {
     display: flex; gap: 20px; font-family: 'Space Mono'; font-size: 0.9rem;
     border-top: 3px solid var(--ink); border-bottom: 3px solid var(--ink);
     padding: 1rem 0;
+    flex-wrap: wrap;
 }
 
 .content { 
@@ -432,6 +454,10 @@ article h1 {
     header { padding: 1rem; }
 }
 
+@media (max-width: 480px) {
+    article h1 { font-size: 2rem; }
+}
+
 /* Markdown Content Styling */
 .content h2 { 
     margin-top: 3rem; margin-bottom: 1.5rem; font-size: 2.2rem; 
@@ -461,6 +487,9 @@ article h1 {
 .content table {
     width: 100%; border-collapse: collapse; margin: 2rem 0;
     font-family: 'Space Mono', 'Noto Sans SC', monospace; font-size: 0.9rem;
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 .content th, .content td { padding: 0.8rem; text-align: left; }
 .content td { border: 2px solid var(--ink);}
