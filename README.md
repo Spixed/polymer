@@ -43,6 +43,7 @@ enableEmoji = true
   favicon = "/logo.png"
 
   [params.waline]
+    enable = true
     serverURL = "https://your-waline-server.vercel.app/"
 
 [taxonomies]

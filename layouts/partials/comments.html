@@ -1,4 +1,4 @@
-{{ if .Site.Params.waline.serverURL }}
+{{ if and .Site.Params.waline.enable .Site.Params.waline.serverURL }}
 <div id="waline" style="margin-top: 3rem;"></div>
 <link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css">
 <script type="module">

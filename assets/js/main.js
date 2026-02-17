@@ -494,19 +494,52 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // --- 6. TOC SPY ---
-    const observer = new IntersectionObserver(
-        (entries) => {
-            entries.forEach((entry) => {
-                if (entry.intersectionRatio > 0 && entry.target.id) {
-                    document.querySelectorAll("aside nav a").forEach((a) => a.classList.remove("active"));
-                    const activeLink = document.querySelector(`aside nav a[href="#${entry.target.id}"]`);
-                    if (activeLink) activeLink.classList.add("active");
-                }
+    const tocHeaders = document.querySelectorAll(".content h2[id], .content h3[id]");
+    const tocLinks = document.querySelectorAll("aside nav a");
+    
+    // Use requestAnimationFrame for smoother scrolling
+    let ticking = false;
+
+    function highlightToc() {
+        const scrollPos = window.scrollY + 50; 
+        let currentId = "";
+        let found = false;
+        
+        tocHeaders.forEach(header => {
+            if (header.offsetTop <= scrollPos) {
+                currentId = header.id;
+                found = true;
+            }
+        });
+        
+        // If before first header, highlight all
+        if (!found && tocLinks.length > 0) {
+            tocLinks.forEach(link => link.classList.add("active"));
+            return;
+        }
+
+        tocLinks.forEach(link => {
+            link.classList.remove("active");
+            if (currentId && link.getAttribute("href") === "#" + currentId) {
+                link.classList.add("active");
+            }
+        });
+    }
+    
+    function onScroll() {
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                highlightToc();
+                ticking = false;
             });
-        },
-        { rootMargin: "0px 0px -80% 0px" }
-    );
-    document.querySelectorAll(".content h2[id], .content h3[id]").forEach((section) => observer.observe(section));
+            ticking = true;
+        }
+    }
+
+    if (tocHeaders.length > 0) {
+        window.addEventListener("scroll", onScroll);
+        highlightToc();
+    }
 
     distributeColorsAndSizes();
 });
