@@ -159,6 +159,7 @@ header {
 .filter-bar {
     padding: 2rem 2rem 0 2rem; max-width: 1600px; margin: 0 auto;
     display: flex; gap: 10px; flex-wrap: wrap;
+    position: relative; z-index: 5;
 }
 
 .filter-btn {
@@ -167,13 +168,15 @@ header {
     font-family: 'Space Mono'; 
     font-weight: 700; cursor: pointer;
     transform: translateY(4px); transition: 0.2s;
+    position: relative; z-index: 1;
 }
-.filter-btn:hover { transform: translateY(0); }
+.filter-btn:hover { transform: translateY(0); z-index: 10; }
 .filter-btn.active {
     background: var(--yellow); color: #121212; 
     transform: translateY(0);
     box-shadow: 0 -4px 0 rgba(0,0,0,0.1) inset;
     border-color: var(--border-color);
+    z-index: 10;
 }
 
 /* Author Profile */
@@ -183,7 +186,7 @@ header {
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 .author-profile-container.visible {
-    max-height: 500px; opacity: 1; padding-top: 20px; padding-bottom: 20px;
+    max-height: 500px; opacity: 1; padding-top: 0; padding-bottom: 20px;
 }
 
 .profile-card {
