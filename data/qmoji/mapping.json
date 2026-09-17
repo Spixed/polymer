@@ -395,6 +395,11 @@
     "emojiType": 1
   },
   {
+    "emojiId": "114",
+    "describe": "/篮球",
+    "emojiType": 2
+  },
+  {
     "emojiId": "116",
     "describe": "/示爱",
     "emojiType": 1
@@ -1110,6 +1115,16 @@
     "emojiType": 1
   },
   {
+    "emojiId": "358",
+    "describe": "/骰子",
+    "emojiType": 2
+  },
+  {
+    "emojiId": "359",
+    "describe": "/包剪锤",
+    "emojiType": 2
+  },
+  {
     "emojiId": "360",
     "describe": "/亲亲",
     "emojiType": 2
@@ -1270,6 +1285,21 @@
     "emojiType": 2
   },
   {
+    "emojiId": "392",
+    "describe": "/龙年快乐",
+    "emojiType": 2
+  },
+  {
+    "emojiId": "393",
+    "describe": "/新年中龙",
+    "emojiType": 2
+  },
+  {
+    "emojiId": "394",
+    "describe": "/新年大龙",
+    "emojiType": 2
+  },
+  {
     "emojiId": "395",
     "describe": "/略略略",
     "emojiType": 2
@@ -1362,6 +1392,21 @@
   {
     "emojiId": "413",
     "describe": "/摇起来",
+    "emojiType": 2
+  },
+  {
+    "emojiId": "415",
+    "describe": "/划龙舟",
+    "emojiType": 2
+  },
+  {
+    "emojiId": "416",
+    "describe": "/中龙舟",
+    "emojiType": 2
+  },
+  {
+    "emojiId": "417",
+    "describe": "/大龙舟",
     "emojiType": 2
   }
 ]
