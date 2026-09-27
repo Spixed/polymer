@@ -21,7 +21,7 @@
                 <div class="about-authors" style="margin-top: 4rem; border-top: var(--border); padding-top: 3rem;">
                     <h2 style="margin-bottom: 2rem;">{{ T "authors" | default "AUTHORS" }}</h2>
                     <div class="author-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
-                        {{ range $.Site.Data.authors }}
+                        {{ range (hugo).Data.authors }}
                         <div class="about-author-card" style="border: var(--border); padding: 2rem; background: var(--surface); box-shadow: var(--shadow);">
                             <div style="width: 80px; height: 80px; border-radius: 50%; background-image: url('{{ .avatar }}'); background-size: cover; border: var(--border); margin-bottom: 1rem;"></div>
                             <h3 style="margin: 0 0 0.5rem 0; font-size: 1.5rem;">{{ .name }}</h3>

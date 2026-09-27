@@ -6,8 +6,8 @@
         </h1>
     </div>
     
-    {{ if .Site.Data.links }}
-        {{ range .Site.Data.links.friends }}
+    {{ if (hugo).Data.links }}
+        {{ range (hugo).Data.links.friends }}
         <div class="card-wrapper span-4 style-grey">
             <a href="{{ .url }}" target="_blank" class="card-inner" style="display: flex; flex-direction: row; align-items: center; gap: 20px; padding: 2rem; text-decoration: none;">
                 <div style="width: 80px; height: 80px; border-radius: 50%; background: url('{{ .avatar }}') center/cover; border: var(--border); flex-shrink: 0;"></div>

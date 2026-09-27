@@ -13,7 +13,7 @@
     {{- $match := dict -}}
     
     {{- /* Iterate through data */ -}}
-    {{- range site.Data.qmoji.mapping -}}
+    {{- range (hugo).Data.qmoji.mapping -}}
         {{- if eq .describe $target -}}
             {{- $found = true -}}
             {{- $match = . -}}

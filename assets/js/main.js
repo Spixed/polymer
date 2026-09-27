@@ -1,3 +1,9 @@
+// --- 0. MOTION PREFERENCE ---
+// Shared gate for every decorative animation (hero autoplay, card tilt /
+// parallax, Lottie). The CSS side lives in the prefers-reduced-motion block
+// of main.css.
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 // --- 1. THEME LOGIC ---
 function toggleMenu() {
     const menu = document.getElementById("mobile-menu");
@@ -225,8 +231,8 @@ document.addEventListener("DOMContentLoaded", () => {
         filterGrid("all", defaultFilterBtn);
     }
 
-    // Start Hero Auto Play
-    if (document.querySelector(".hero-slide")) {
+    // Start Hero Auto Play (skipped for reduced-motion users)
+    if (document.querySelector(".hero-slide") && !prefersReducedMotion) {
         startHeroAutoPlay();
     }
 
@@ -260,9 +266,9 @@ document.addEventListener("DOMContentLoaded", () => {
         blob.style.borderRadius = generateRandomBlob();
     });
 
-    // Desktop Interactions
+    // Desktop Interactions (skipped for reduced-motion users)
     const isDesktop = window.matchMedia("(hover: hover) and (pointer: fine) and (min-width: 900px)").matches;
-    if (isDesktop) {
+    if (isDesktop && !prefersReducedMotion) {
         document.querySelectorAll(".card-wrapper").forEach((wrapper) => {
             const inner = wrapper.querySelector(".card-inner");
             const blob = wrapper.querySelector(".ink-blob");
@@ -357,16 +363,58 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // Code Blocks
+    // IMPORTANT: the copy button must NOT live inside <pre>, because <pre>
+    // is the horizontal scroll container — an absolutely positioned child
+    // still scrolls with the content. It goes into .code-toolbar instead,
+    // which sits in .code-container and therefore never moves.
     document.querySelectorAll("pre").forEach((pre) => {
-        if (pre.querySelector(".copy-btn")) return;
+        let host = pre.closest(".code-container");
+
+        // Bare <pre> (raw HTML in markdown, third-party markup, …):
+        // wrap it so it gets the same positioning context.
+        if (!host) {
+            host = document.createElement("div");
+            host.className = "code-container";
+            pre.parentNode.insertBefore(host, pre);
+            host.appendChild(pre);
+        }
+
+        let toolbar = host.querySelector(":scope > .code-toolbar");
+        if (!toolbar) {
+            toolbar = document.createElement("div");
+            toolbar.className = "code-toolbar";
+            host.insertBefore(toolbar, host.firstChild);
+        }
+
+        // Guard against double injection.
+        if (toolbar.querySelector(".copy-btn")) return;
+
         const btn = document.createElement("button");
+        btn.type = "button";
         btn.className = "copy-btn";
         btn.textContent = "COPY";
-        btn.onclick = () => {
-            const code = pre.querySelector("code").innerText;
-            copyToClipboard(code, btn);
+        btn.setAttribute("aria-label", "Copy code");
+        btn.onclick = (e) => {
+            e.preventDefault();
+            // Chroma gives us one .cl per logical line, so rebuilding the text
+            // from them keeps blank lines (which Chrome's innerText drops
+            // because their block is empty) and still excludes the gutter.
+            const cells = pre.querySelectorAll(".line .cl");
+            const text = cells.length
+                ? Array.from(cells).map((cl) => cl.innerText).join("\n")
+                : (pre.querySelector("code") || pre).innerText;
+            copyToClipboard(text, btn);
         };
-        pre.appendChild(btn);
+        // Prepend, so the DOM order is [copy-btn][code-lang]: the language
+        // tag keeps the far corner and the button sits to its left.
+        toolbar.insertBefore(btn, toolbar.firstChild);
+
+        // Line numbers via CSS counters: opt in only when the gutter markup
+        // (injected by the render hook) is present and the block has more
+        // than one line — a lone "1" above a one-liner is pure noise.
+        if (pre.querySelector(".ln") && pre.querySelectorAll(".line").length > 1) {
+            pre.classList.add("linenos");
+        }
     });
 
     document.querySelectorAll(".content code:not(pre code)").forEach((code) => {
@@ -501,26 +549,22 @@ document.addEventListener("DOMContentLoaded", () => {
     let ticking = false;
 
     function highlightToc() {
-        const scrollPos = window.scrollY + 50; 
+        const scrollPos = window.scrollY + 50;
         let currentId = "";
-        let found = false;
-        
+
         tocHeaders.forEach(header => {
             if (header.offsetTop <= scrollPos) {
                 currentId = header.id;
-                found = true;
             }
         });
-        
-        // If before first header, highlight all
-        if (!found && tocLinks.length > 0) {
-            tocLinks.forEach(link => link.classList.add("active"));
-            return;
-        }
 
+        // Before the first heading nothing is highlighted yet — highlighting
+        // EVERY link at once (the old behaviour) read as a broken underline.
         tocLinks.forEach(link => {
             link.classList.remove("active");
-            if (currentId && link.getAttribute("href") === "#" + currentId) {
+            // .hash returns "#id" even when the href is a full URL, so this
+            // survives Hugo ToCs that emit absolute anchors.
+            if (currentId && link.hash === "#" + currentId) {
                 link.classList.add("active");
             }
         });
@@ -581,24 +625,26 @@ function adjustDropCap() {
 
 function applyDropCap(element) {
     if (!element) return;
-    const style = getComputedStyle(element);
-    const lineHeight = parseFloat(style.lineHeight);
-    const fontSize = parseFloat(style.fontSize);
-    if (!lineHeight || !fontSize) return;
+    // Guard: paragraphs that START with a digit, punctuation or symbol
+    // (a dated postscript like "2024.2.18 …") must not get a drop cap —
+    // ::first-letter would slice the date into "2|024.2.18".
+    element.classList.remove("no-drop-cap");
+    const text = (element.textContent || "").trim();
+    if (text && /^[\p{Nd}\p{P}\p{S}]/u.test(text)) {
+        element.classList.add("no-drop-cap");
+        return;
+    }
 
-    const clone = element.cloneNode(true);
-    clone.style.position = "absolute";
-    clone.style.visibility = "hidden";
-    clone.style.pointerEvents = "none";
-    clone.style.width = element.clientWidth + "px";
-    clone.style.height = "auto";
-    element.parentNode.insertBefore(clone, element.nextSibling);
-    const totalHeight = clone.getBoundingClientRect().height;
-    clone.parentNode.removeChild(clone);
-
-    const lines = Math.max(1, Math.round(totalHeight / lineHeight));
-    let dropCapSize = lines === 1 ? fontSize * 2.2 : lineHeight * 2;
-    element.style.setProperty("--drop-cap-size", `${dropCapSize}px`);
+    // Every drop cap is EXACTLY two of the paragraph's own text lines
+    // tall. The old rule shrank single-line paragraphs to fontSize * 2.2,
+    // which made the first paragraph of a multi-paragraph blockquote (one
+    // visual line) render visibly smaller than the multi-line quote in
+    // the next block. line-height is unitless (1.6) in the stylesheet, so
+    // this scales with the element's own font-size and needs no clone
+    // measuring — the size is identical for every cap on the page.
+    const lineHeight = parseFloat(getComputedStyle(element).lineHeight);
+    if (!lineHeight) return;
+    element.style.setProperty("--drop-cap-size", `${lineHeight * 2}px`);
 }
 
 document.addEventListener("DOMContentLoaded", adjustDropCap);
@@ -625,7 +671,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     container: container,
                     renderer: "svg",
                     loop: true,
-                    autoplay: true,
+                    autoplay: !prefersReducedMotion,
                     path: path,
                 });
             }

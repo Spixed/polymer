@@ -13,6 +13,7 @@ Thumbs.db
 # Tools
 tools/
 scripts/
+githooks/
 
 # Temporary files
 *.tmp
@@ -22,3 +23,15 @@ scripts/
 
 # Node.js dependencies
 node_modules/
+
+# AI Agent files
+.augment/
+.roo/
+
+# Obsidian configuration
+content/.obsidian/
+# Now I wanna use GitHub to make a copy of my Ob configs
+
+# Ob plugin indexing temp files
+content/.smtcmp_json_db
+content/.smtcmp_vector_db.tar.gz

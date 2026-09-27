@@ -19,7 +19,7 @@
                     <span>//</span>
                     <span style="text-transform: none; display: inline-flex; align-items: center;">{{ T "by" | default "BY" }}&nbsp;
                         {{ if .Params.author }}
-                            {{ $author := index $.Site.Data.authors .Params.author }}
+                            {{ $author := index (hugo).Data.authors .Params.author }}
                             {{ $name := .Params.author }}
                             {{ $avatar := "" }}
                             {{ if $author }}
@@ -76,28 +76,7 @@
 {{ end }}
 
 {{ define "scripts" }}
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Handle TOC active state
-        const links = document.querySelectorAll('aside nav ul li a');
-        const sections = document.querySelectorAll('h2, h3');
-        
-        window.addEventListener('scroll', () => {
-            let current = "";
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                if (pageYOffset >= sectionTop - 100) {
-                    current = section.getAttribute('id');
-                }
-            });
-
-            links.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href').includes(current)) {
-                    link.classList.add('active');
-                }
-            });
-        });
-    });
-</script>
+{{/* TOC scroll-spy lives ONCE in assets/js/main.js (--- 6. TOC SPY ---).
+     It used to be duplicated here as an inline scroll listener, and the two
+     copies fought over the .active class — a maintenance trap. */}}
 {{ end }}

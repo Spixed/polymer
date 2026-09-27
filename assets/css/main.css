@@ -18,6 +18,47 @@
     --border: 4px solid var(--border-color);
     --shadow: 8px 8px 0px var(--shadow-color);
     --shadow-large: 10px 10px 0px var(--shadow-color);
+
+    /* Grain overlay. The noise is dark-ish, so it needs a higher alpha to
+       register on the light theme's white/cream surfaces than on dark ones. */
+    --grain-opacity: 0.1;
+
+    /* --- Code block surface ---------------------------------------------
+       A dark translucent VEIL rather than an opaque slab: the page
+       background and its grain texture stay visible through it, so the
+       block reads as a layer of the page instead of a sticker on top.
+       The alpha is tuned PER THEME — the veil has to be calibrated against
+       a different surface colour in each (the veil sits on .article-main's
+       --surface, not on --bg). Resulting surfaces:
+         light -> ~#252529 over the white article sheet
+         dark  -> ~#26262a over the #1e1e1e article sheet */
+    --code-bg: rgba(18, 18, 22, 0.92);
+    --code-fg: #d4d4d4;          /* plain text / punctuation                */
+    --code-lang-bg: #ffd600;     /* language tag (theme yellow accent)      */
+    --code-lang-fg: #121212;
+    --code-ui-bg: rgba(255, 255, 255, 0.08);  /* copy button idle           */
+    --code-ui-fg: #e6e1d6;
+    --code-ui-accent: #ffd600;   /* copy button hover                       */
+    --code-lineno: #8a8a93;      /* line numbers                            */
+
+    /* Line-number gutter. Width fits 3-digit numbers; the background is the
+       OPAQUE equivalent of the veil above (veil composited over --surface),
+       so the pinned gutter masks sliding code while staying invisible as a
+       seam. Recompute it if --code-bg or --surface changes. */
+    --code-gutter: 3.2em;
+    --code-gutter-bg: #252529;
+}
+
+[data-theme="dark"] {
+    --code-bg: rgba(45, 45, 52, 0.55);
+    --code-gutter-bg: #26262a;
+    /* Muted/secondary text. Flipped here so figcaptions, <rt> ruby and
+       emoji error notes stay readable on the dark article sheet. */
+    --dark-grey: #a8a8a8;
+
+    /* The noise is dark-ish and sits on a dark sheet, so it needs less alpha
+       here than in light mode to read as texture rather than as dirt. */
+    --grain-opacity: 0.04;
 }
 
 html {
@@ -31,11 +72,37 @@ html {
     --surface: #1e1e1e;
     --ink: #fdf6e3; /* Off-white text */
     --border-color: #fdf6e3;
-    --shadow-color: #000000;
-    --blob-opacity: 0.2; 
-    
+    /* The hard offset shadow is the movement's second signature. Pure black
+       on #121212 is 1.12:1 — invisible — so dark mode mirrors light mode:
+       the shadow takes the border colour (cream), exactly like light mode
+       takes ink-black for both. */
+    --shadow-color: #fdf6e3;
+    --blob-opacity: 0.2;
+
     /* In dark mode, Grey card becomes dark grey */
     --grey: #2d2d2d;
+}
+
+/* Keyboard focus: the browser's default ring is near-invisible against the
+   cream/ink palette, so draw a hard blue outline that survives every
+   surface (cream, yellow aside, dark sheet). */
+:focus-visible {
+    outline: 3px solid var(--blue);
+    outline-offset: 2px;
+}
+
+/* Motion opt-out: this theme is animated by default (infinite blob morph,
+   carousel autoplay, card tilt), which is exactly what vestibular-sensitive
+   users need to be able to switch off. Kill every animation and transition;
+   main.js additionally stops the hero autoplay, the tilt/parallax effects
+   and Lottie autoplay when this query matches. */
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -62,7 +129,7 @@ h1, h2, h3, h4, h5, h6, .brand-font, .archive-year, .archive-title {
 /* 噪点层 */
 .grain {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    pointer-events: none; z-index: 9999; opacity: 0.04;
+    pointer-events: none; z-index: 9999; opacity: var(--grain-opacity);
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
 }
 
@@ -133,10 +200,16 @@ header {
     text-align: center;
     font-family: 'Space Mono';
 }
-.footer-controls { 
+.footer-controls {
     position: fixed; bottom: 30px; left: 30px; z-index: 90;
     display: flex; gap: 10px; flex-direction: row;
 }
+/* The floating toggles hover ABOVE page content (and cover card text when
+   scrolling), so at rest they recede to half transparency and only solidify
+   on hover / keyboard focus. */
+.footer-controls .btn-toggle { opacity: 0.5; }
+.footer-controls .btn-toggle:hover,
+.footer-controls .btn-toggle:focus-visible { opacity: 1; }
 
 @media (max-width: 900px) {
     .mobile-menu { display: flex; }
@@ -285,6 +358,12 @@ h2 { font-size: 2.2rem; line-height: 1.1; text-shadow: 1px 1px 0 rgba(0,0,0,0.1)
 .hero-slide.active { display: flex; animation: fadeIn 0.5s; }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
+/* The pager (arrows, play button, dots) is pinned to the card's bottom-right
+   corner; without this reserved band its dots sit on the last line of the
+   summary. The nav occupies ~44px (bottom 20px + height), so 4.5rem of
+   content padding clears it with room to spare. */
+#hero-card .card-content { padding-bottom: 4.5rem; }
+
 .hero-nav {
     position: absolute; bottom: 20px; right: 20px; z-index: 10;
     display: flex; gap: 10px; align-items: center;
@@ -394,14 +473,32 @@ article h1 {
 }
 .content p { margin-bottom: 1.5rem; }
 
-.content p:first-of-type::first-letter,
-.content blockquote p:first-of-type::first-letter {
+.content > p:first-of-type::first-letter,
+.content > blockquote p:first-of-type::first-letter {
     font-size: var(--drop-cap-size, 4rem);
     float: left;
     margin-right: 0.6rem;
     line-height: 0.9;
     font-weight: bold;
     font-family: 'Space Grotesk', 'Huiwen-mincho', 'Noto Sans SC', sans-serif;
+}
+
+/* Opt-out for paragraphs whose first character must not be sliced off —
+   a drop cap on "2024.2.18…" splits the date into "2|024.2.18". main.js
+   adds .no-drop-cap when the paragraph starts with a digit, punctuation
+   or symbol. Must come AFTER the rules above to win the tie on
+   specificity — and it must undo EVERYTHING the drop-cap rule applies
+   (size, float, weight, family…), not just the size, or the first
+   character still renders in the drop-cap font. */
+.content > p.no-drop-cap::first-letter,
+.content > blockquote p.no-drop-cap::first-letter {
+    float: none;
+    font-size: inherit;
+    font-weight: inherit;
+    font-family: inherit;
+    font-style: inherit;
+    line-height: inherit;
+    margin: 0;
 }
 
 .content h3 {
@@ -421,11 +518,15 @@ article h1 {
 }
 .next-article:hover { transform: translate(-5px, -5px); box-shadow: 15px 15px 0 var(--red); }
 
-/* Color Styles - Cartoon Palette */
-.style-red .card-inner { background: var(--red); color: white; }
-.style-red .meta { background: white; color: var(--red); }
-.style-blue .card-inner { background: var(--blue); color: white; }
-.style-blue .meta { background: white; color: var(--blue); }
+/* Color Styles - Cartoon Palette
+   One rule for every bright card: saturated flat fill + #121212 ink.
+   Black on --red is 5.28:1 and on --blue 4.70:1 (white was only 3.55/3.98,
+   failing AA for body copy), so red/blue join yellow/green in black ink
+   instead of carrying white text or white inset panels. */
+.style-red .card-inner { background: var(--red); color: #121212; }
+.style-red .meta { background: #121212; color: var(--red); }
+.style-blue .card-inner { background: var(--blue); color: #121212; }
+.style-blue .meta { background: #121212; color: var(--blue); }
 .style-green .card-inner { background: var(--green); color: #121212; }
 .style-green .meta { background: #121212; color: var(--green); }
 .style-yellow .card-inner { background: var(--yellow); color: #121212; }
@@ -433,6 +534,20 @@ article h1 {
 .style-grey .card-inner { background: var(--grey); color: var(--ink); }
 .style-black .card-inner { background: #121212; color: white; }
 .style-black .meta { background: white; color: #121212; }
+
+/* WCAG AA fix — take two. The first pass moved red/blue body copy into
+   white inset panels: compliant, but a hard white slab glued onto a flat
+   colour field fights the whole "no stickers" spirit of the palette.
+   Removed. With #121212 ink on the fills themselves, only the summaries'
+   INLINE opacity 0.8 still dips below the bar (blue falls to 4.38:1), so
+   pin it back to 1 here: ink on red 5.28:1, on blue 4.70:1 — both legal.
+   Grey/white cards keep their softened 0.8 summaries; those surfaces pass
+   with room to spare. The !important is required to beat the inline style
+   on the <p>. */
+.style-red .card-content p,
+.style-blue .card-content p {
+    opacity: 1 !important;
+}
 
 /* Responsive */
 @media (max-width: 900px) {
@@ -527,15 +642,29 @@ article h1 {
     box-shadow: 1px 1px 0 var(--border-color);
 }
 
+/* --------------------------------------------------------------------------
+   Code block shell
+   .code-container  → positioning context, never scrolls
+     .code-toolbar  → language tag + copy button, pinned top-right
+     .highlight > pre → the ONLY horizontally scrollable element
+   -------------------------------------------------------------------------- */
 .content pre {
-    background: #1e1e1e; color: #fdf6e3;
-    padding: 1.5rem; overflow-x: auto;
+    background: var(--code-bg);
+    color: var(--code-fg);
+    padding: 1.5rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: pre; /* narrowed screens switch to pre-wrap, see media query */
     border: none;
     margin: 2rem 0;
-    position: relative;
     font-family: 'Maple Mono NF CN', 'Space Mono', monospace;
     font-size: 13pt;
     line-height: 1.5;
+    /* The surface is dark in both themes, so the native scrollbar must be
+       dark too — otherwise Chrome paints a light track on it. */
+    color-scheme: dark;
+    scrollbar-width: thin;
+    scrollbar-color: #4a4a52 transparent;
 }
 .content pre code {
     background: transparent; padding: 0; color: inherit;
@@ -550,44 +679,327 @@ article h1 {
     margin: 2rem 0;
 }
 
-.code-lang {
+/* Inside a container the container owns the vertical rhythm, so the <pre>
+   must not add its own margin — otherwise the toolbar would be offset from
+   the top edge of the scroll box. */
+.code-container > pre,
+.code-container > .highlight,
+.code-container > .highlight > pre {
+    margin: 0;
+}
+
+/* --- Toolbar: stays put while the code scrolls --------------------------- */
+.code-toolbar {
     position: absolute;
     top: 0;
     right: 0;
-    background: var(--ink);
-    color: var(--bg);
-    padding: 2px 8px;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.8rem;
-    font-weight: bold;
-    z-index: 5;
-    pointer-events: none;
-    border-bottom-left-radius: 4px;
-}
-
-/* Adjust Copy Button position if lang is present */
-.code-container .copy-btn {
-    top: 30px; /* Move down below the language label */
-    right: 0;
-    border-right: none;
-}
-
-/* Ensure pre has relative positioning for contained elements if needed */
-.content pre {
-    position: relative;
-}
-
-/* Copy Button for Pre Blocks */
-.copy-btn {
-    position: absolute; top: 10px; right: 10px;
-    background: var(--surface); border: 2px solid var(--ink);
-    color: var(--ink); padding: 4px 8px;
-    font-family: 'Space Mono'; font-size: 0.8rem; font-weight: bold;
-    cursor: pointer; opacity: 0; transition: 0.2s;
     z-index: 10;
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-end;
+    /* Exactly the <pre> top padding, so the bar occupies the padding band
+       and never covers the first line of code. Because the band is empty
+       space, the bar can safely be a hover target itself. */
+    height: 1.5rem;
+    max-width: 100%;
+    overflow: hidden;
+    line-height: 1;
+    /* Hovering ANYWHERE on the bar — the language tag or the copy button —
+       reveals the copy button. */
+    pointer-events: auto;
 }
-.content pre:hover .copy-btn { opacity: 1; }
-.copy-btn:hover { background: var(--ink); color: var(--bg); }
+
+/* Language tag */
+.code-lang {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 1 auto;
+    min-width: 0;
+    padding: 0 8px;
+    background: var(--code-lang-bg);
+    color: var(--code-lang-fg);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: bold;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* Must stay interactive: it is one of the two hover triggers. */
+    pointer-events: auto;
+}
+
+/* Copy button — lives in .code-toolbar, NOT in <pre>, so it is anchored to
+   the container's right edge and stays visible on horizontally scrolled
+   code. DOM order is [copy-btn][code-lang], i.e. the language tag sits in
+   the far corner and the button appears to its left. */
+.copy-btn {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+    padding: 0 10px;
+    background: var(--code-ui-bg);
+    color: var(--code-ui-fg);
+    border: none;
+    border-right: 2px solid var(--code-lang-bg);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: bold;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none; /* invisible button must not block text selection */
+    transition: opacity 0.2s, background 0.2s, color 0.2s;
+}
+/* Reveal triggers: the code block, the toolbar band, the language tag,
+   or the button itself. */
+.code-container:hover .copy-btn,
+.code-toolbar:hover .copy-btn,
+.code-lang:hover ~ .copy-btn,
+.copy-btn:hover,
+.copy-btn:focus-visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+.copy-btn:hover { background: var(--code-ui-accent); color: #121212; }
+.copy-btn:active { background: var(--code-ui-fg); color: #121212; }
+
+/* Touch devices have no hover: keep the button permanently reachable. */
+@media (hover: none) {
+    .copy-btn { opacity: 1; pointer-events: auto; }
+}
+
+/* --- Line numbers ---------------------------------------------------------
+   The render hook injects an empty <span class="ln"> at the head of every
+   line; the digits themselves come from a CSS counter, so `innerText` (what
+   COPY grabs) never contains them and manual selection can't pick them up.
+
+   Layout contract for a numbered block:
+     .line   display:block      → one logical line
+     .ln     inline-block, position:sticky, width:var(--code-gutter)
+             → a fixed gutter that stays pinned while code scrolls under it
+     .cl     inline-block       → ALL of the line's wrapped rows stay inside
+                                   it, so they hang-indent past the gutter and
+                                   can never be mistaken for a new line
+   The gutter's background is --code-gutter-bg, the opaque equivalent of the
+   veil, so it masks sliding code without showing as a seam. */
+.highlight pre.chroma { counter-reset: lineno; }
+.highlight .line { counter-increment: lineno; }
+
+/* .linenos lives on the <pre> itself, so the gutter inset must be written
+   as pre.linenos — a `.linenos pre.chroma` descendant selector would never
+   match and the 1.5rem inset would come back. */
+pre.linenos.chroma { padding-left: 0; }
+
+.linenos .line { display: block; }
+.linenos .ln {
+    display: inline-block;
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    vertical-align: top;
+    width: var(--code-gutter);
+    padding-right: 1.1em;
+    text-align: right;
+    background: var(--code-gutter-bg);
+    color: var(--code-lineno);
+}
+.linenos .ln::before { content: counter(lineno); }
+.linenos .cl {
+    display: inline-block;
+    vertical-align: top;
+}
+
+/* Narrow screens: wrapping beats horizontal scrolling on a phone. Line
+   numbers stay on — with the hang-indent above, wrapped rows keep their
+   place in the gutter column instead of reading as new lines. */
+@media (max-width: 640px) {
+    .content pre {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+    }
+
+    /* Wrapped-mode layout repair. In horizontal-scroll mode .cl is an
+       inline-block with an huge max-content width and .ln pins itself via
+       position:sticky — fine. But under pre-wrap Chrome computes the
+       inline-block's shrink-to-fit width against the FULL content box,
+       not the space left of the gutter. Any line longer than
+       (pre − gutter) then cannot fit beside .ln, drops BELOW it, and the
+       code starts at x=0 with the line number stranded on its own row.
+       A flex row fixes the geometry: .ln keeps its fixed gutter, .cl
+       occupies exactly the remaining width and wraps inside it. As a
+       bonus, align-items:stretch makes the opaque gutter background cover
+       wrapped rows instead of stopping after the first line. */
+    .linenos .line {
+        display: flex;
+        align-items: stretch;
+    }
+    .linenos .ln {
+        flex: 0 0 auto;
+    }
+    .linenos .cl {
+        display: block;
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+}
+
+/* ==========================================================================
+   SYNTAX HIGHLIGHTING — Hugo / Chroma, class-based
+   --------------------------------------------------------------------------
+   Palette name : "Polymer Dark"
+   Surface      : #1e1e1e   (== VS Code Dark+ background)
+   Requires     : [markup.highlight] noClasses = false   (see hugo.toml)
+
+   Class names below are Chroma's *short* token names. Hugo emits:
+       <div class="highlight"><pre class="chroma">
+           <code class="language-c"><span class="cp">#include</span> …
+   so every rule is scoped to .highlight.
+
+   Design rule: one role = one colour. Comment, preprocessor, keyword,
+   type, string, number, function and variable each get a distinct hue, so
+   a token can never be confused with another family (the old inline
+   Monokai palette painted `#include` in the comment grey #75715e).
+   ========================================================================== */
+
+/* The code surface is owned by this theme, NOT by whatever Chroma style is
+   loaded. These selectors outrank both `.content pre` and a generated
+   `.chroma { background-color: … }` sheet, so a palette can be swapped in
+   without silently dragging its own background along. To adopt another
+   style's surface, change --code-bg / --code-fg instead of fighting
+   specificity. */
+.highlight { background: transparent; }
+.highlight pre,
+.highlight pre.chroma {
+    background: var(--code-bg);
+    color: var(--code-fg);
+}
+
+/* --- Comments — muted green, italic (never reuse for preprocessor) ------- */
+.highlight .c,
+.highlight .ch,   /* #! shebang            */
+.highlight .cm,   /* block comment         */
+.highlight .c1,   /* // line comment       */
+.highlight .cs {  /* doc comment           */
+    color: #6a9955;
+    font-style: italic;
+}
+
+/* --- Preprocessor / directives — magenta, bold --------------------------
+   `#include`, `#define`, `#ifdef`, `#pragma` … were previously the same
+   grey as comments. They now get their own role. */
+.highlight .cp  { color: #c586c0; font-weight: bold; }
+.highlight .cpf { color: #ce9178; font-weight: normal; } /* <iostream>, "foo.h" */
+
+/* --- Keywords ----------------------------------------------------------- */
+.highlight .k,    /* keyword (if/else/for/return/struct/static/typedef) */
+.highlight .kc,   /* constant keyword (true / false / null)             */
+.highlight .kd,   /* declaration (let / var / def / function)           */
+.highlight .kn,   /* namespace (using / import / package)               */
+.highlight .kp,   /* pseudo keyword (__init__ …)                        */
+.highlight .kr,   /* reserved word                                      */
+.highlight .kw {  /* legacy alias                                       */
+    color: #c586c0;
+}
+
+/* Types get their own colour so declarations read at a glance. */
+.highlight .kt { color: #569cd6; } /* int / char / void / double / bool */
+
+/* Word operators: and / or / not / in / is */
+.highlight .ow { color: #c586c0; }
+
+/* --- Strings ------------------------------------------------------------ */
+.highlight .s, .highlight .sa,
+.highlight .sb, .highlight .s1, .highlight .s2,
+.highlight .sc, .highlight .sd,
+.highlight .sh, .highlight .si,
+.highlight .sx, .highlight .ss,
+.highlight .dl {
+    color: #ce9178;
+}
+.highlight .se { color: #d7ba7d; }              /* \n  \t  %s  escapes   */
+.highlight .sr { color: #d16969; }              /* regex                 */
+
+/* --- Numbers & literals ------------------------------------------------- */
+.highlight .m, .highlight .mb, .highlight .mf,
+.highlight .mh, .highlight .mi, .highlight .mo,
+.highlight .il,
+.highlight .l, .highlight .ld,
+/* Chroma splits IPv4 components into `mf` and `py`; keep the whole
+   address/port in the same numeric role used by Lowlight. */
+.highlight .py {
+    color: #b5cea8;
+}
+
+/* --- Functions ---------------------------------------------------------- */
+.highlight .nf,   /* function name  */
+.highlight .fm,   /* magic function */
+.highlight .nd,   /* decorator      */
+.highlight .ni {  /* entity         */
+    color: #dcdcaa;
+}
+
+/* --- Names -------------------------------------------------------------- */
+.highlight .n  { color: inherit; }  /* plain identifier                   */
+.highlight .na, /* attribute      */
+.highlight .nt, /* tag            */
+.highlight .nv, /* variable       */
+.highlight .vg, /* global var     */
+.highlight .vi, /* instance var   */
+.highlight .vm, /* magic var      */
+.highlight .nl, /* label          */
+.highlight .nx { color: #9cdcfe; }  /* other name (call sites)            */
+
+.highlight .nc,   /* class          */
+.highlight .nn,   /* namespace name */
+.highlight .ne,   /* exception      */
+.highlight .nb,   /* builtin        */
+.highlight .bp {  /* builtin pseudo */
+    color: #4ec9b0;
+}
+
+.highlight .no { color: #4fc1ff; }  /* constant / enum member             */
+
+/* --- Punctuation & operators -------------------------------------------- */
+.highlight .p  { color: #d4d4d4; }  /* ( ) { } [ ] ; , : . -> */
+.highlight .o  { color: #d4d4d4; }  /* + - * / = == && || */
+.highlight .w  { color: inherit; }  /* whitespace — never colour it */
+
+/* --- Text / generic ----------------------------------------------------- */
+.highlight .gd { color: #f44747; }                /* deleted            */
+.highlight .gi { color: #4ec9b0; }                /* inserted           */
+.highlight .ge { font-style: italic; }            /* emph               */
+.highlight .gs { font-weight: bold; }             /* strong             */
+.highlight .gh, .highlight .gu {                  /* heading subheading */
+    color: #569cd6;
+    font-weight: bold;
+}
+.highlight .gt { color: #f44747; }                /* traceback          */
+.highlight .gp { color: #6a9955; }                /* prompt             */
+.highlight .go { color: #808080; }                /* output             */
+.highlight .gr, .highlight .err {                 /* error              */
+    color: #f44747;
+    text-decoration: underline wavy #f44747;
+}
+
+/* Chroma's PowerShell lexer treats the colon in a bare URL argument as an
+   error token (`http://127.0.0.1:7890`). It is valid command data here, so
+   keep that punctuation in the normal code colour. */
+.highlight code.language-powershell .err {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* --- Line numbers / line highlight --------------------------------------
+   Only rendered when a code fence sets lineNos / hl_lines. */
+.highlight .ln, .highlight .lnt { color: #858585; }
+.highlight .hl {
+    display: block;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: inset 3px 0 0 var(--code-lang-bg);
+}
+
 
 .content ul, .content ol { padding-left: 2rem; margin-bottom: 2rem; }
 .content li { margin-bottom: 0.5rem; }
@@ -648,8 +1060,26 @@ article h1 {
 }
 
 /* Ruby */
-ruby { font-size: inherit; }
-rt { font-size: 0.6em; color: var(--dark-grey); }
+ruby {
+    font-size: inherit;
+    /* ruby-align decides how the annotation tracks against the base:
+       - space-around (this): when the annotation is NARROWER than the base
+         (大傻子 over 小可爱, 三个字 over 字数不对等) its glyphs distribute
+         to fill the base width; when it is as wide as or wider than the
+         base (かんじ over 漢字, "ul pb" over 双拼) it stays at natural
+         width, centred — the blog-writer reference look.
+       - center would tighten EVERY annotation (大傻子 collapses), and the
+         raw default is implicit, so declare it explicitly and keep the
+         intent documented. */
+    ruby-align: space-around;
+}
+rt {
+    font-size: 0.6em;
+    color: var(--dark-grey);
+    /* rt inherits .content's 1.7 line-height, which inflates the ruby's
+       line box and pushes lines apart wherever a ruby appears. */
+    line-height: 1.15;
+}
 
 /* Footnotes */
 .footnotes {
@@ -684,7 +1114,10 @@ sup.footnote-ref a:hover {
     font-weight: normal !important;
     margin: 0 !important;
     line-height: inherit !important;
-    font-family: "Space Grotesk, Noto Sans SC, sans-serif" !important;
+    /* NOTE: the family list must NOT be wrapped in quotes — quoting the
+       whole string makes it one invalid family name and the declaration
+       gets dropped. */
+    font-family: 'Space Grotesk', 'Noto Sans SC', sans-serif !important;
 }
 
 /* Target highlight for footnotes */
@@ -805,7 +1238,8 @@ sup.footnote-ref a:hover {
     overflow-y: auto;
     background: rgba(0,0,0,0.03);
     padding: 1rem;
-    border-radius: 8px;
+    /* Square corners, like every other panel on the site. */
+    border-radius: 0;
     margin-bottom: 1rem;
 }
 
@@ -855,7 +1289,9 @@ sup.footnote-ref a:hover {
     background: var(--ink);
     color: var(--bg);
     padding: 5px 10px;
-    border-radius: 4px;
+    /* Zero radius — the whole site speaks hard right angles; the old 4px
+       here was a leak, not a decision. */
+    border-radius: 0;
     font-size: 0.8rem;
     font-family: 'Space Mono';
     pointer-events: none;

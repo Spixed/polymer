@@ -28,6 +28,18 @@ themesDir = "../.."
   tag = "tags"
 
 [markup]
+  [markup.highlight]
+    # Class-based highlighting is required for the theme's Chroma palette.
+    # With inline styles Hugo bakes in Monokai, where preprocessor
+    # directives are coloured exactly like comments.
+    noClasses = false
+    codeFences = true
+    guessSyntax = false
+    lineNos = false
+    lineNumbersInTable = false
+    tabWidth = 4
+    noHl = false
+
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true

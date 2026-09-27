@@ -18,7 +18,7 @@
                             <span class="meta">{{ if $post.Params.featured }}FEATURED{{ else if $post.Params.categories }}{{ index $post.Params.categories 0 | upper }}{{ else }}POST{{ end }}</span>
                             <span class="meta" style="background: transparent; color: inherit; box-shadow: inset 0 0 0 2px currentColor;">
                                 {{ if $post.Params.author }}
-                                    {{ with index $.Site.Data.authors $post.Params.author }}{{ .nickname | default $post.Params.author }}{{ else }}{{ $post.Params.author }}{{ end }}
+                                    {{ with index (hugo).Data.authors $post.Params.author }}{{ .nickname | default $post.Params.author }}{{ else }}{{ $post.Params.author }}{{ end }}
                                 {{ else }}
                                     {{ $.Site.Title }}
                                 {{ end }}
